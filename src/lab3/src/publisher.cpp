@@ -1,20 +1,32 @@
 #include "ros/ros.h"
-#include "std_msgs/Float64.h"
+#include "std_msgs/String.h"
+#include <sstream>
 
-#include <math.h>
+int main(int argc, char **argv)
+{
+  ros::init(argc, argv, "talker");
+  ros::NodeHandle n;
+  ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
+  ros::Rate loop_rate(1);
+  int count = 0;
 
-int main (int argc, char **argv) {
-	ros::init(argc, argv, "rotate");
-	ros::NodeHandle nh;
-	ros::Publisher pub3 = nh.advertise<std_msgs::Float64>("/joint4/command", 100);
-	ros::Rate loop_rate(10);
-	ros::Time startTime = ros::Time::now();
-	while(ros::ok()) {
-		std_msgs::Float64 msg_to_send;
-		msg_to_send.data = 0.5;
-		pub3.publish(msg_to_send);
-        ROS_INFO("ismoving goalpos to zero");
-        ros::spinOnce();
-        loop_rate.sleep();
-	}
+  std::string id = "201750737";
+
+  while (ros::ok())
+  {
+    std_msgs::String msg;
+
+    std::stringstream ss;
+
+    ss << id[count % id.length()];
+    msg.data = ss.str();
+    ROS_INFO("%s", msg.data.c_str());
+    chatter_pub.publish(msg);
+    ros::spinOnce();
+    loop_rate.sleep();
+    ++count;
+  }
+
+
+  return 0;
 }
