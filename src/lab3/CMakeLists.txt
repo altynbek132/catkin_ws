@@ -18,6 +18,10 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(asdf src/asdf.cpp)
-target_link_libraries(asdf ${catkin_LIBRARIES})
-add_dependencies(asdf lab3)
+add_executable(publisher src/publisher.cpp)
+target_link_libraries(publisher ${catkin_LIBRARIES})
+add_dependencies(publisher lab3)
+
+add_executable(listener src/listener.cpp)
+target_link_libraries(listener ${catkin_LIBRARIES})
+add_dependencies(listener lab3)
