@@ -214,7 +214,7 @@ foreach(depend ${depends})
   list(APPEND lab3_EXPORTED_TARGETS ${${lab3_dep}_EXPORTED_TARGETS})
 endforeach()
 
-set(pkg_cfg_extras "")
+set(pkg_cfg_extras "lab3-msg-extras.cmake")
 foreach(extra ${pkg_cfg_extras})
   if(NOT IS_ABSOLUTE ${extra})
     set(extra ${lab3_DIR}/${extra})
