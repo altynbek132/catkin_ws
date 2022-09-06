@@ -6,6 +6,7 @@
 int main (int argc, char **argv) {
 	ros::init(argc, argv, "rotate");
 	ros::NodeHandle nh;
+	ros::Publisher pub3 = nh.advertise<std_msgs::Float64>("/joint4/command", 100);
 	ros::Rate loop_rate(10);
 	ros::Time startTime = ros::Time::now();
 	while(ros::ok()) {
