@@ -11,7 +11,7 @@ int main (int argc, char **argv) {
 	while(ros::ok()) {
 		std_msgs::Float64 msg_to_send;
 		msg_to_send.data = 0.5;
-		pub3_publish(msg_to_send);
+		pub3.publish(msg_to_send);
         ROS_INFO("ismoving goalpos to zero");
         ros::spinOnce();
         loop_rate.sleep();

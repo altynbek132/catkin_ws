@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 2.8.3)
 project(lab3)
 
 find_package(catkin REQUIRED COMPONENTS
@@ -6,6 +6,10 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
 )
+
+## Generate added messages and services
+generate_messages(DEPENDENCIES std_msgs)
+
 
 catkin_package(
 )
