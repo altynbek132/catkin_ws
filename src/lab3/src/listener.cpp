@@ -4,38 +4,57 @@
 
 #include <math.h>
 
-bool turnLeft = true;
-int prevNum = -1;
-ros::Publisher pub3;
-ros::Rate loop_rate;
-
-void chatterCallback(const std_msgs::String::ConstPtr& msg)
+class SubscribeAndPublish
 {
-	int num = std::stoi(msg->data.c_str());
-	if(num > prevNum) {
-		
-		std_msgs::Float64 msg_to_send;
-		int angle = 1;
-		if (turnLeft) {
-			angle = -angle;
-		}
-		msg_to_send.data = angle;
-		pub3.publish(msg_to_send);
-		ROS_INFO("ismoving goalpos to zero");
-		turnLeft = !turnLeft;
+public:
+	SubscribeAndPublish()
+	{
+		// Topic you want to publish
+		pub_ = n_.advertise<std_msgs::Float64>("/joint4/command", 1000);
+
+		// Topic you want to subscribe
+		sub_ = n_.subscribe("/subscribed_topic", 1, &SubscribeAndPublish::chatterCallback, this);
 	}
-	prevNum = num;
-	ros::spinOnce();
-	loop_rate.sleep();
-}
 
+	void chatterCallback(const std_msgs::String::ConstPtr &msg)
+	{
+		int num = std::stoi(msg->data.c_str());
+		if (num > prevNum)
+		{
+			std_msgs::Float64 msg_to_send;
+			int angle = 1;
+			if (turnLeft)
+			{
+				angle = -angle;
+			}
+			msg_to_send.data = angle;
+			pub_.publish(msg_to_send);
+			ROS_INFO("ismoving goalpos to zero");
+			turnLeft = !turnLeft;
+		}
+		prevNum = num;
+	}
 
-int main (int argc, char **argv) {
-	ros::init(argc, argv, "listener rotater");
-	ros::NodeHandle nh;
- 	ros::Subscriber sub = nh.subscribe("chatter", 1000, chatterCallback);
+private:
+	ros::NodeHandle n_;
+	ros::Publisher pub_;
+	ros::Subscriber sub_;
 
-	loop_rate = ros::Rate(1);
+	bool turnLeft = true;
+	int prevNum = -1;
+	ros::Publisher pub_;
+	ros::Rate loop_rate;
+};
 
-	pub3 = nh.advertise<std_msgs::Float64>("/joint4/command", 100);
+int main(int argc, char **argv)
+{
+	// Initiate ROS
+	ros::init(argc, argv, "listener_rotater");
+
+	// Create an object of class SubscribeAndPublish that will take care of everything
+	SubscribeAndPublish SAPObject;
+
+	ros::spin();
+
+	return 0;
 }
