@@ -10,7 +10,7 @@ public:
 	SubscribeAndPublish()
 	{
 		// Topic you want to publish
-		pub_ = n_.advertise<std_msgs::Float64>("/end/command", 1000);
+		pub_ = n_.advertise<std_msgs::Float64>("/motortom2m/command", 1000);
 
 		// Topic you want to subscribe
 		sub_ = n_.subscribe("chatter", 1, &SubscribeAndPublish::chatterCallback, this);
@@ -19,11 +19,14 @@ public:
 	void chatterCallback(const std_msgs::String::ConstPtr &msg)
 	{
 		std_msgs::Float64 msg_to_send;
-		int angle = 1;
+		double bias = 0;
+
+		double angle = 1;
 		if (turnLeft)
 		{
 			angle = -angle;
 		}
+		angle += bias;
 		msg_to_send.data = angle;
 		pub_.publish(msg_to_send);
 		ROS_INFO("moving");
