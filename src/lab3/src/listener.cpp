@@ -13,7 +13,7 @@ public:
 		pub_ = n_.advertise<std_msgs::Float64>("/joint4/command", 1000);
 
 		// Topic you want to subscribe
-		sub_ = n_.subscribe("/subscribed_topic", 1, &SubscribeAndPublish::chatterCallback, this);
+		sub_ = n_.subscribe("chatter", 1, &SubscribeAndPublish::chatterCallback, this);
 	}
 
 	void chatterCallback(const std_msgs::String::ConstPtr &msg)
@@ -42,8 +42,6 @@ private:
 
 	bool turnLeft = true;
 	int prevNum = -1;
-	ros::Publisher pub_;
-	ros::Rate loop_rate;
 };
 
 int main(int argc, char **argv)

@@ -7,7 +7,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "talker");
   ros::NodeHandle n;
   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
-  ros::Rate loop_rate(1);
+  ros::Rate loop_rate(1.0 / 2.0);
   int count = 0;
 
   std::string id = "201750737";
@@ -26,7 +26,6 @@ int main(int argc, char **argv)
     loop_rate.sleep();
     ++count;
   }
-
 
   return 0;
 }
